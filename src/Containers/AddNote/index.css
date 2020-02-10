@@ -1,0 +1,14 @@
+.AddNote {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    background-image: linear-gradient(white,lightskyblue);
+    padding: 2rem;
+    flex: 2;
+    color: steelblue;
+  }
+
+  .CreateNew{
+    margin: 2rem;
+  }

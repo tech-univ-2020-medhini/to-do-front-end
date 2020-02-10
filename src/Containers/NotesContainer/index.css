@@ -1,0 +1,9 @@
+.NotesContainer{
+    height: 11rem;
+    width: inherit;
+    padding: 0.5rem;
+    border-style: solid;
+    border-width: 0.2rem;
+    border-color: white;
+    overflow: scroll;
+}

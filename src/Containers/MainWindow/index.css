@@ -1,0 +1,19 @@
+.HomePage {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    background-image: linear-gradient(white,lightskyblue);
+    padding: 2rem;
+    flex: 2;
+    color: steelblue;
+  }
+
+  .title{
+    color: lightskyblue;
+    font-size: 2.3rem;
+  }
+
+  .NoteContainer{
+    margin: 1.5rem;
+  }
