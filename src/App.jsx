@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import HomePage from './Containers/MainWindow';
-import ProfileBar from './Components/ProfileWindow';
+import MainWindow from './Containers/MainWindow';
+import ProfileWindow from './Components/ProfileWindow';
 import AddNote from './Containers/AddNote';
 import './App.css';
 
@@ -10,59 +10,69 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isCreateNew: false,
-      listOfNotes: [],
+      createdNew: false,
+      notesList: [],
     };
   }
 
-  componentDidMount = async () => {
+  getNotes = async() => {
     const response = await axios.get('http://localhost:8080/notes');
-    const noteList = response.data.map((note) => note.description);
+    const noteList = response.data;
+    // const descList = noteList.map(element => {
+    //   return {element.id, element.description}
+    // })
     this.setState({
-      listOfNotes: [...noteList],
+      notesList: [...noteList]
+    })
+  }
+
+  componentDidMount = () => {
+    this.getNotes();
+  }
+  createNew = () => {
+    const { notesList } = this.state;
+    this.setState({
+      notesList: [...notesList],
+      createdNew: true,
     });
   }
 
-  createNewClick = () => {
-    const { listOfNotes } = this.state;
+  addNote = async(noteText) => {
+    console.log(noteText);
+    const { notesList } = this.state;
+    await axios.post('http://localhost:8080/notes', {
+      title: 'Note 1',
+      description: noteText
+    })
     this.setState({
-      listOfNotes: [...listOfNotes],
-      isCreateNew: true,
-    });
-  }
-
-  addTypedNote = () => {
-    const { listOfNotes } = this.state;
-    const noteDetails = document.getElementById('note-description').value;
-    this.setState({
-      listOfNotes: [...listOfNotes, noteDetails],
-      isCreateNew: false,
+      notesList: [...notesList, { id: '123', title: 'Note 1', description: noteText}],
+      createdNew: false,
     });
   }
 
   deleteNote = (text) => {
-    const { listOfNotes } = this.state;
-    const noteList = [...listOfNotes];
+    const { notesList } = this.state;
+    const noteList = [...notesList];
     const index = noteList.indexOf(text);
     noteList.splice(index, 1);
     this.setState({
-      listOfNotes: [...noteList],
+      notesList: [...noteList],
     });
   }
 
   render() {
-    const { isCreateNew, listOfNotes } = this.state;
+    const { createdNew, notesList } = this.state;
     return (
       <div className="App">
-      <ProfileBar />
-      { !isCreateNew ? (
-        <HomePage
-          CreateNewClick={this.createNewClick}
-          noteList={listOfNotes}
-          deleteNote={(text) => this.deleteNote(text)}
+      <ProfileWindow />
+      { !createdNew ? (
+        <MainWindow
+          createNew={this.createNew}
+          notesList={notesList}
+          deleteNote={(id) => this.deleteNote(id)}
         />
       )
-        : <AddNote AddTypedNote={this.addTypedNote} /> }
+        : <AddNote addedNote={this.addNote} /> }
       </div>
     );
   }

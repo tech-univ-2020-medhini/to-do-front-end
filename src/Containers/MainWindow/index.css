@@ -1,9 +1,9 @@
-.HomePage {
+.MainWindow {
     display: flex;
     flex-direction: column;
     text-align: center;
     justify-content: center;
-    background-image: linear-gradient(white,lightskyblue);
+    background-image: linear-gradient(white, skyblue);
     padding: 2rem;
     flex: 2;
     color: steelblue;

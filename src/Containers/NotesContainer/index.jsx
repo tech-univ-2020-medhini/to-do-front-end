@@ -1,13 +1,13 @@
 import React from 'react';
 import propTypes from 'prop-types';
-import NoteCard from '../../Components/Notes';
+import Note from '../../Components/Notes';
 import './index.css';
 
 const NotesContainer = (props) => {
-  const { noteList, deleteNote } = props;
-  const notes = [...noteList].reverse().map((note, nodeIndex) => (
+  const { notesList, deleteNote } = props;
+  const notes = [...notesList].map((note) => (
     // eslint-disable-next-line react/no-array-index-key
-    <NoteCard key={nodeIndex} text={note} deleteNote={(text) => deleteNote(text)} />
+    <Note key={note.id} noteobj={note} deleteNote={(text) => deleteNote(text)} />
   ));
   return (
     <div className="NotesContainer">
@@ -17,7 +17,7 @@ const NotesContainer = (props) => {
 };
 
 NotesContainer.propTypes = {
-  noteList: propTypes.arrayOf(propTypes.string).isRequired,
+  notesList: propTypes.arrayOf(propTypes.objects).isRequired,
   deleteNote: propTypes.func.isRequired,
 };
 

@@ -7,21 +7,21 @@ import Button from '../../Components/Button';
 import './index.css';
 
 const MainWindow = (props) => {
-  const { CreateNewClick, noteList, deleteNote } = props;
+  const { createNew, notesList, deleteNote } = props;
   return (
-    <div className="HomePage">
+    <div className="MainWindow">
       <div className="title">
-        ALL TODOs
+        To Do
       </div>
-      <NotesContainer noteList={noteList} deleteNote={(text) => deleteNote(text)} />
-      <Button text="CREATE NEW" onClick={CreateNewClick} />
+      <NotesContainer notesList={notesList} deleteNote={(text) => deleteNote(text)} />
+      <Button text="New Note" onClick={createNew} />
     </div>
   );
 };
 
 MainWindow.propTypes = {
-  CreateNewClick: propTypes.func.isRequired,
-  noteList: propTypes.node.isRequired,
+  createNew: propTypes.func.isRequired,
+  notesList: propTypes.node.isRequired,
   deleteNote: propTypes.func.isRequired,
 };
 

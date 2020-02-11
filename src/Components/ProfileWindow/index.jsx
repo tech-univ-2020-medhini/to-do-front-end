@@ -24,8 +24,8 @@ const currentDate = () => {
 
 const ProfileWindow = () => (
   <div className="ProfileBar">
-    <img className="img" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="W3Schools.com" />
-    HI
+    <img className="img" src="https://image.shutterstock.com/image-photo/beautiful-water-drop-on-dandelion-260nw-789676552.jpg" alt="W3Schools.com" />
+    HELLO
     <div className="dateAndTime">
       {currentTime()}
       {' '}

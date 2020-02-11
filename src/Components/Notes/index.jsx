@@ -5,17 +5,17 @@ import Button from '../Button';
 
 
 function Notes(props) {
-  const { text, deleteNote } = props;
+  const { noteobj, deleteNote } = props;
   return (
     <div className="NoteCard">
-      {text}
-      <Button text="DONE" onClick={() => deleteNote(text)} />
+      {noteobj.description}
+      <Button text="DONE" onClick={() => deleteNote(noteobj.id)} />
     </div>
   );
 }
 
 Notes.propTypes = {
-  text: propTypes.string.isRequired,
+  note: propTypes.isRequired,
   deleteNote: propTypes.func.isRequired,
 };
 

@@ -4,42 +4,43 @@ import Button from '../../Components/Button';
 
 import './index.css';
 
-// const charCount = () => document.getElementById('note-description').value.length;
-
 class AddNote extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       charCount: 0,
+      description: '',
     };
   }
 
-  charCounter() {
-    const noteText = document.getElementById('note-description').value.length;
+  charCounter = (event) => {
+    const length = event.target.value.length;
+    const text = event.target.value;
+    console.log(length)
     this.setState({
-      charCount: noteText,
+      charCount: length,
+      description: text
     });
   }
 
   render() {
-    const { AddTypedNote } = this.props;
+    const { addedNote } = this.props;
     const { charCount } = this.state;
     return (
       <div className="AddNote">
-        <textarea id="note-description" maxLength="100" rows="8" onInput={this.charCounter} />
+        <textarea id="description" maxLength="1000" rows="8" onInput={(event) => this.charCounter(event)} />
         Characters left:
         {' '}
         {charCount}
         /100
-        <Button text="ADD NOTE" onClick={AddTypedNote} />
+        <Button text="Add Note" onClick={() => addedNote(this.state.description)} />
       </div>
     );
   }
 }
 
 AddNote.propTypes = {
-  AddTypedNote: propTypes.func.isRequired,
-
+  addedNote: propTypes.func.isRequired,
 };
 
 export default AddNote;
