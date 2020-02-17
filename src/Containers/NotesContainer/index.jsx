@@ -1,6 +1,14 @@
 import React from 'react';
 import propTypes from 'prop-types';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+  Link,
+} from 'react-router-dom';
 import Note from '../../Components/Notes';
+import NoteView from '../NoteView';
 import './index.css';
 
 const NotesContainer = (props) => {

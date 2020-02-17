@@ -1,81 +1,111 @@
-import React from 'react';
+import React, { useState, useEffect, useLocation } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import axios from 'axios';
+import queryString from 'query-string';
 import MainWindow from './Containers/MainWindow';
 import ProfileWindow from './Components/ProfileWindow';
 import AddNote from './Containers/AddNote';
+import NoteView from './Containers/NoteView';
 import './App.css';
 
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      createdNew: false,
-      notesList: [],
-    };
-  }
+const App = (props) => {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     createdNew: false,
+  //     notesList: [],
+  //   };
+  // }
 
-  getNotes = async() => {
-    const response = await axios.get('http://localhost:8080/notes');
-    const noteList = response.data;
-    // const descList = noteList.map(element => {
-    //   return {element.id, element.description}
-    // })
-    this.setState({
-      notesList: [...noteList]
-    })
-  }
+  const [createdNew, setCreatedNew] = useState(false);
+  const [notesList, setNotesList] = useState([]);
+  const [loaded, setLoaded] = useState(null);
 
-  componentDidMount = () => {
-    this.getNotes();
-  }
-  createNew = () => {
-    const { notesList } = this.state;
-    this.setState({
-      notesList: [...notesList],
-      createdNew: true,
-    });
-  }
+  const getNotes = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/notes');
+      const noteList = response.data;
+      // const descList = noteList.map(element => {
+      //   return {element.id, element.description}
+      // })
+      setNotesList([...noteList]);
+      setLoaded(true);
+    } catch (err) {
+      setLoaded(true);
+    }
+  };
 
-  addNote = async(noteText) => {
-    console.log(noteText);
-    const { notesList } = this.state;
-    await axios.post('http://localhost:8080/notes', {
-      title: 'Note 1',
-      description: noteText
-    })
-    this.setState({
-      notesList: [...notesList, { id: '123', title: 'Note 1', description: noteText}],
-      createdNew: false,
-    });
-  }
+  // componentDidMount = () => {
+  //   this.getNotes();
+  // }
+  useEffect(() => {
+    getNotes();
+  }, []);
 
-  deleteNote = (text) => {
-    const { notesList } = this.state;
+  const createNew = () => {
+    setCreatedNew(true);
+  };
+
+  const addNote = async (noteText) => {
+    try {
+      await axios.post('http://localhost:8080/notes', {
+        title: 'Note 1',
+        description: noteText,
+      });
+      setNotesList([...notesList, { id: '123', title: 'Note 1', description: noteText }]);
+      // (<Redirect
+      //   to={{
+      //     pathname: '/',
+      //     state: { from: location },
+      //   }}
+      // />);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const deleteNote = (text) => {
     const noteList = [...notesList];
     const index = noteList.indexOf(text);
     noteList.splice(index, 1);
-    this.setState({
-      notesList: [...noteList],
-    });
-  }
-
-  render() {
-    const { createdNew, notesList } = this.state;
-    return (
+    setNotesList([...noteList]);
+  };
+  return (
+    <Router>
       <div className="App">
-      <ProfileWindow />
-      { !createdNew ? (
+        <ProfileWindow />
+        {/* { !createdNew ? (
         <MainWindow
-          createNew={this.createNew}
+          createNew={createNew}
           notesList={notesList}
-          deleteNote={(id) => this.deleteNote(id)}
+          deleteNote={(id) => deleteNote(id)}
         />
       )
-        : <AddNote addedNote={this.addNote} /> }
+        : <AddNote addedNote={addNote} /> } */}
+        <Switch>
+          <Route exact path="/new">
+            <AddNote addedNote={addNote} />
+          </Route>
+          <Route exact path="/view">
+            <NoteView notes={notesList} isLoaded={loaded} />
+          </Route>
+          <Route path="/">
+            <MainWindow
+              createNew={createNew}
+              notesList={notesList}
+              deleteNote={(id) => deleteNote(id)}
+            />
+          </Route>
+        </Switch>
       </div>
-    );
-  }
-}
+    </Router>
+  );
+};
 
 export default App;

@@ -1,6 +1,14 @@
 import React from 'react';
 import propTypes from 'prop-types';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+} from 'react-router-dom';
+
 import NotesContainer from '../NotesContainer';
+
 import Button from '../../Components/Button';
 
 
@@ -13,8 +21,13 @@ const MainWindow = (props) => {
       <div className="title">
         To Do
       </div>
-      <NotesContainer notesList={notesList} deleteNote={(text) => deleteNote(text)} />
-      <Button text="New Note" onClick={createNew} />
+      <Switch>
+        <Route exact path="/">
+          <NotesContainer notesList={notesList} deleteNote={(text) => deleteNote(text)} />
+
+        </Route>
+      </Switch>
+      {/* <Button text="New Note" onClick={createNew} /> */}
     </div>
   );
 };
